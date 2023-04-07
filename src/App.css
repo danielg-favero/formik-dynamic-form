@@ -25,3 +25,9 @@ button {
     width: 100%;
     height: 30px;
 }
+
+.field {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}

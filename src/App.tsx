@@ -1,53 +1,60 @@
-import { Formik, FieldArray, useField, FieldArrayRenderProps, FormikValues } from 'formik'
-import { useCallback, useState } from 'react'
+import { FormikValues } from "formik";
+import { useCallback, useState } from "react";
 
-import "./App.css"
+import "./App.css";
+import { FormStepper, FormStep, FormFieldsPage } from "./components";
+import { IFormValuesProps } from "./types";
 
 function App() {
+  const [sidebarPages, setSidebarPages] = useState<IFormValuesProps[]>([
+    { id: 0, fields: [] },
+  ]);
+  const [currentStep, setCurrentStep] = useState(0);
+
   const handleSubtmit = useCallback((values: FormikValues) => {
-    console.log({ values })
-  }, [])
+    setTimeout(() => {
+      alert(JSON.stringify(values, null, 2));
+    }, 1000);
+  }, []);
+
+  const handleAddPage = useCallback(() => {
+    const newPageId = sidebarPages.length;
+    const newPage = {
+      id: newPageId,
+      fields: [],
+    };
+
+    setSidebarPages((prerviousSidebarPages) => {
+      return [...prerviousSidebarPages, newPage];
+    });
+  }, [sidebarPages]);
+
+  const handleSwitchPage = useCallback((pageIndex: number) => {
+    setCurrentStep(pageIndex);
+  }, []);
 
   return (
     <main>
       <aside>
-        <button>New Page +</button>
+        {sidebarPages.map((page, index) => (
+          <button key={index} onClick={() => handleSwitchPage(index)}>
+            Página {index + 1}
+          </button>
+        ))}
+        <button onClick={handleAddPage}>New Page +</button>
       </aside>
-      <Formik 
-        initialValues={{ 
-          fields: [{ 
-            input: '' 
-          }]
-        }}
+      <FormStepper
+        currentStep={currentStep}
+        initialValues={sidebarPages}
         onSubmit={handleSubtmit}
+        enableReinitialize
       >
-        {({ submitForm, setValues, values }) => (
-          <section>
-            <FieldArray name='fields' render={() => (
-              <section>
-                {values.fields.map((field, index) => (
-                  <input 
-                    key={`${field}.input.${index}`}
-                    name={`${field}.input.${index}`}
-                    type="text" 
-                    placeholder='Type Something...'
-                  />
-                ))}
-                <button 
-                  onClick={() => setValues({ fields: [...values.fields, { input: '' }] })}
-                >
-                  New Field +
-                </button>
-              </section>
-            )}/>
-            <button type="submit" onClick={submitForm}>
-              Submit Form
-            </button>
-          </section>
-        )}
-      </Formik>
+        {sidebarPages.map((page, index) => (
+          <FormFieldsPage pageIndex={index} onChange={setSidebarPages} />
+        ))}
+      </FormStepper>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;
