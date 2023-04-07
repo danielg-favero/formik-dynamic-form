@@ -35,9 +35,9 @@ function App() {
     (index: number) => {
       setSidebarPages((prerviousSidebarPages) => {
         prerviousSidebarPages.splice(index, 1);
-        console.log(prerviousSidebarPages);
         return [...prerviousSidebarPages];
       });
+
       setCurrentStep((previousCurrentStep) => {
         if (previousCurrentStep === 0) {
           return 0;
