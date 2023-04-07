@@ -1,6 +1,6 @@
 import { FieldArray, useFormikContext } from "formik";
 import React, { useCallback, useEffect } from "react";
-import { Button, FormStep, Input } from "..";
+import { Button, FormStep, IconButton, Input } from "..";
 import { IFormFieldsPage } from "./types";
 import { MdDelete, MdAdd, MdSend } from "react-icons/md";
 import { IFormValuesProps } from "../../types";
@@ -41,9 +41,9 @@ export const FormFieldsPage: React.FC<IFormFieldsPage> = ({
                     type="text"
                     placeholder="Type something..."
                   />
-                  <Button onClick={() => remove(index)}>
+                  <IconButton onClick={() => remove(index)}>
                     <MdDelete />
-                  </Button>
+                  </IconButton>
                 </div>
               ))}
               <Button onClick={() => handleAddField(insert)}>
