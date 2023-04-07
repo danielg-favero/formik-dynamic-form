@@ -1,9 +1,11 @@
 import { FormikValues } from "formik";
 import { useCallback, useState } from "react";
 
-import "./App.css";
-import { FormStepper, FormStep, FormFieldsPage } from "./components";
+import "./tailwind.css";
+
+import { FormStepper, FormFieldsPage, Button } from "./components";
 import { IFormValuesProps } from "./types";
+import { MdAdd } from "react-icons/md";
 
 function App() {
   const [sidebarPages, setSidebarPages] = useState<IFormValuesProps[]>([
@@ -34,14 +36,20 @@ function App() {
   }, []);
 
   return (
-    <main>
-      <aside>
+    <main className="flex w-screen h-screen overflow-hidden bg-slate-900">
+      <aside className="flex flex-col w-2/12 gap-2 px-8 py-4 shadow-2xl bg-indigo-950">
         {sidebarPages.map((page, index) => (
-          <button key={index} onClick={() => handleSwitchPage(index)}>
-            Página {index + 1}
-          </button>
+          <Button
+            isEnabled={index === currentStep}
+            key={index}
+            onClick={() => handleSwitchPage(index)}
+          >
+            Page {index + 1}
+          </Button>
         ))}
-        <button onClick={handleAddPage}>New Page +</button>
+        <Button onClick={handleAddPage}>
+          New Page <MdAdd />
+        </Button>
       </aside>
       <FormStepper
         currentStep={currentStep}
