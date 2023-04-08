@@ -1,176 +1,37 @@
-# React Dynamic Pages and Dynamic Fields on Form
+# Dynamic Multiple Steps and Multiple Fields Form using Formik
 
-## Iniciar projeto react
+A simple example of a dynamic multiple steps and multiple fields form in React using **Vite**, **Formik** and **TailwindCSS**
+
+## Live Demo
+
+[Try it Yourself](https://danielg-favero.github.io/formik-dynamic-form/)
+
+## How to run the project
+
+### Clone the Repo
+
+```bash 
+git clone git@github.com:danielg-favero/formik-dynamic-form.git
+```
+
+### Change to the project's directory
 
 ```bash
-npm init vite@latest dynamic-form -- --template react-ts
-``` 
-
-## Estrutura do form
-
-```html
-<main>
-    <aside>
-        <button>New Page +</button>
-    </aside>
-    <form>
-        <input type="text" placeholder="Type Something"/>
-        <button>New Field +</button>
-        <button type="submit">Submit Form</button>
-    </form>
-</main>
+cd formik-dynamic-form
 ```
 
-## Adicionar Formik
+### Install dependencies using yarn
+
+**Make sure you have yarn installed on your computer** otherwise, follow the [yarn setup](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable) tutorial.
 
 ```bash
-yarn add formik
+yarn
 ```
 
-## Usando formik
+### Launch the development server
 
-```tsx
-import { Formik, FieldArray, FormikValues, Field } from 'formik'
-import { useCallback } from 'react'
-
-import "./App.css"
-
-function App() {
-  const handleSubtmit = useCallback((values: FormikValues) => {
-    console.log({ values })
-  }, [])
-
-  return (
-    <main>
-      <aside>
-        <button>New Page +</button>
-      </aside>
-      <Formik 
-        initialValues={{ 
-          fields: []
-        }}
-        onSubmit={handleSubtmit}
-      >
-        {({ submitForm, values }) => (
-          <section>
-            <FieldArray name='fields' render={({ insert }) => (
-              <section>
-                {values.fields.map((field, index) => (
-                  <Field 
-                    name={`fields.${index}`}
-                    key={`fields.${index}`}
-                    type="text"
-                    placeholder='Type Something...'
-                  />
-                ))}
-                <button 
-                  onClick={() => {
-                    insert(values.fields.length, '')
-                  }}
-                >
-                  New Field +
-                </button>
-              </section>
-            )}/>
-            <button type="submit" onClick={submitForm}>
-              Submit Form
-            </button>
-          </section>
-        )}
-      </Formik>
-    </main>
-  )
-}
-
-export default App
+```bash
+yarn dev
 ```
 
-# Adicionar o FormStepper
-
-```tsx
-import { Formik } from "formik"
-import { Children, ReactElement } from "react"
-import { IFormStepperProps } from "./types"
-
-export const FormStepper: React.FC<IFormStepperProps> = ({ children, currentStep, ...props }) => {
-    const childrenArray = Children.toArray(children as ReactElement)
-  
-    const currentChild = childrenArray[currentStep]
-
-    return (
-      <Formik
-        {...props}
-        onSubmit={(values, helpers) => props.onSubmit(values, helpers)}
-      >
-        {currentChild}
-      </Formik>
-    )
-}
-```
-
-```tsx
-import React from 'react'
-
-import { IFormStepProps } from './types'
-
-export * from './types'
-
-const FormStep: React.FC<IFormStepProps> = ({ children }) => {
-  return <section>{children}</section>
-}
-
-export default FormStep
-```
-
-```tsx
-function App() {
-  const formRef = useRef<FormikProps<FormikValues>>(null)
-
-  const handleSubtmit = useCallback((values: FormikValues) => {
-    console.log({ values })
-  }, [])
-
-  return (
-    <main>
-      <aside>
-        <button>New Page +</button>
-      </aside>
-      <FormStepper 
-        currentStep={0}
-        initialValues={{ 
-          fields: []
-        }}
-        onSubmit={handleSubtmit}
-        innerRef={formRef}
-      >
-        <FormStep>
-          <FieldArray name='fields' render={({ insert }) => (
-            <section>
-              {formRef.current?.values.fields.map((field: Array<string>, index: number) => (
-                <Field 
-                  name={`fields.${index}`}
-                  key={`fields.${index}`}
-                  type="text"
-                  placeholder='Type Something...'
-                />
-              ))}
-              <button 
-                onClick={() => {
-                  insert(formRef.current?.values.fields.length, '')
-                }}
-              >
-                New Field +
-              </button>
-            </section>
-          )}/>
-          <button type="submit" onClick={formRef.current?.submitForm}>
-            Submit Form
-          </button>
-        </FormStep>
-      </FormStepper>
-    </main>
-  )
-}
-```
-
-# Abstrair em componentes
+Open your browser on `localhost:5173/formik-dynamic-form/`
