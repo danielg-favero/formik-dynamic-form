@@ -27,7 +27,7 @@ export const FormFieldsPage: React.FC<IFormFieldsPage> = ({
   }, [values]);
 
   return (
-    <FormStep initialValues={values} enableReinitialize>
+    <FormStep>
       <main className="flex flex-col w-full gap-4 p-4">
         <FieldArray
           name={`${pageIndex}.fields`}
