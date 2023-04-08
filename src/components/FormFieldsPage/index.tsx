@@ -1,13 +1,13 @@
 import { FieldArray, useFormikContext } from "formik";
 import React, { useCallback, useEffect } from "react";
 import { Button, FormStep, IconButton, Input } from "..";
-import { IFormFieldsPage } from "./types";
+import { IFormFieldsPageProps } from "./types";
 import { MdDelete, MdAdd, MdSend } from "react-icons/md";
 import { IFormValuesProps } from "../../types";
 
 export * from "./types";
 
-export const FormFieldsPage: React.FC<IFormFieldsPage> = ({
+export const FormFieldsPage: React.FC<IFormFieldsPageProps> = ({
   pageIndex,
   onChange,
 }) => {
